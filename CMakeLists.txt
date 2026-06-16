@@ -65,6 +65,7 @@ set(include_asm_DIRS)
 set(symbols_SYMB
     STM32F446xx
     USE_FULL_LL_DRIVER
+    ARM_MATH_CM4
 )
 
 # Symbols definition for each compiler
@@ -74,7 +75,7 @@ set(symbols_asm_SYMB)
 
 # Link directories and names of libraries
 set(link_DIRS)
-set(link_LIBS)
+set(link_LIBS CMSISDSP)
 
 # Linker script is defined in cmake/vscode_generated.cmake
 
@@ -86,6 +87,14 @@ set(linker_OPTS)
 
 # Now call generated cmake
 include("cmake/vscode_generated.cmake")
+
+# Apply compiler flags and macros globally so CMSIS-DSP inherits them
+add_compile_options(${cpu_PARAMS})
+add_compile_definitions(${symbols_SYMB})
+
+# Configure CMSIS-DSP
+set(CMSISCORE ${CMAKE_CURRENT_SOURCE_DIR}/Drivers/CMSIS/Core/CMSIS/Core)
+add_subdirectory(Drivers/CMSIS-DSP/Source)
 
 # Link directories setup
 link_directories(${CMAKE_PROJECT_NAME} ${link_DIRS})

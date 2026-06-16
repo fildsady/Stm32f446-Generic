@@ -10,3 +10,6 @@
 [submodule "Drivers/STM32F4xx_HAL_Driver"]
 	path = Drivers/STM32F4xx_HAL_Driver
 	url = https://github.com/STMicroelectronics/stm32f4xx_hal_driver.git
+[submodule "Drivers/CMSIS-DSP"]
+	path = Drivers/CMSIS-DSP
+	url = https://github.com/ARM-software/CMSIS-DSP.git

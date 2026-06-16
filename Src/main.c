@@ -11,6 +11,8 @@
 #include "FreeRTOS.h"
 #include "task.h"
 
+#include "arm_math.h"
+
 void SystemClock_Config(void)
 {
   /* Enable HSE (High Speed External Clock) */
@@ -63,13 +65,26 @@ void GPIO_Init(void)
   LL_GPIO_SetPinPull(GPIOA, LL_GPIO_PIN_5, LL_GPIO_PULL_NO);
 }
 
-static void blink_task(void *args)
+static void dsp_test_task(void *args)
 {
-	(void)args;
-	while (1) {
-		LL_GPIO_TogglePin(GPIOA, LL_GPIO_PIN_5);
-		vTaskDelay(pdMS_TO_TICKS(500));
-	}
+    (void)args;
+
+    /* CMSIS-DSP Test Data */
+    float32_t a[4] = {1.0f, 2.0f, 3.0f, 4.0f};
+    float32_t b[4] = {2.0f, 2.0f, 2.0f, 2.0f};
+    float32_t result[4];
+
+    while (1) {
+        /* Test Vector Multiplication (utilizes FPU/SIMD) */
+        arm_mult_f32(a, b, result, 4);
+
+        /* Test Fast Math Sine (utilizes FPU) */
+        float32_t sin_val = arm_sin_f32(PI/4);
+        (void)sin_val; // suppress unused warning
+
+        LL_GPIO_TogglePin(GPIOA, LL_GPIO_PIN_5);
+        vTaskDelay(pdMS_TO_TICKS(500));
+    }
 }
 
 int main(void)
@@ -80,8 +95,8 @@ int main(void)
 	/* Initialize GPIO */
 	GPIO_Init();
 
-	/* Create blink task */
-	xTaskCreate(blink_task, "Blink", configMINIMAL_STACK_SIZE, NULL, 2, NULL);
+	/* Create DSP test task */
+	xTaskCreate(dsp_test_task, "DSP_Test", configMINIMAL_STACK_SIZE + 128, NULL, 2, NULL);
 
 	/* Start FreeRTOS scheduler */
 	vTaskStartScheduler();
