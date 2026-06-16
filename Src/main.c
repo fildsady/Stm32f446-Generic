@@ -68,7 +68,7 @@ static void blink_task(void *args)
 	(void)args;
 	while (1) {
 		LL_GPIO_TogglePin(GPIOA, LL_GPIO_PIN_5);
-		vTaskDelay(pdMS_TO_TICKS(500));
+		vTaskDelay(pdMS_TO_TICKS(100));
 	}
 }
 
