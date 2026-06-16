@@ -79,9 +79,9 @@
 #define configMAX_SYSCALL_INTERRUPT_PRIORITY    ( configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY << (8 - configPRIO_BITS) )
 
 /* Definitions that map the FreeRTOS port interrupt handlers to their CMSIS
-standard names. We use libopencm3 names here. */
-#define vPortSVCHandler sv_call_handler
-#define xPortPendSVHandler pend_sv_handler
-#define xPortSysTickHandler sys_tick_handler
+standard names. */
+#define vPortSVCHandler SVC_Handler
+#define xPortPendSVHandler PendSV_Handler
+#define xPortSysTickHandler SysTick_Handler
 
 #endif /* FREERTOS_CONFIG_H */
