@@ -3,6 +3,7 @@
     "cmake.preferredGenerators": [
         "Ninja"
     ],
+    "cortex-debug.stm32cubeprogrammer": "C:/ST/STM32CubeCLT_1.21.0/STM32CubeProgrammer/bin",
     "stm32cube-ide-clangd.path": "cube",
     "stm32cube-ide-clangd.arguments": [
         "starm-clangd",
