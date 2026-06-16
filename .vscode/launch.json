@@ -1,14 +1,42 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        
         {
+            "name": "Cortex-Debug (SWO Live Watch)",
+            "type": "cortex-debug",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "servertype": "stlink",
+            "device": "STM32F446RE",
+            "interface": "swd",
+            "svdFile": "C:/ST/STM32CubeCLT_1.21.0/STMicroelectronics_CMSIS_SVD/STM32F446.svd",
+            "executable": "${workspaceFolder}/build/Debug/Stm32f446-Generic.elf",
+            "preLaunchTask": "Build CMake Debug",
+            "runToEntryPoint": "main",
+            "stlinkPath": "C:/ST/STM32CubeCLT_1.21.0/STLink-gdb-server/bin/ST-LINK_gdbserver.exe",
+            "armToolchainPath": "C:/ST/STM32CubeCLT_1.21.0/GNU-tools-for-STM32/bin",
+            "swoConfig": {
+                "enabled": true,
+                "cpuFrequency": 180000000,
+                "swoFrequency": 2000000,
+                "decoders": [
+                    {
+                        "type": "console",
+                        "label": "ITM",
+                        "port": 0,
+                        "encoding": "ascii"
+                    }
+                ]
+            },
+            "liveWatch": {
+                "enabled": true,
+                "samplingTime": 100
+            }
+        },
+        {
+            "name": "STM32Cube: Launch ST-Link GDB Server",
             "type": "stlinkgdbtarget",
             "request": "launch",
-            "name": "STM32Cube: Launch ST-Link GDB Server",
             "origin": "snippet",
             "cwd": "${workspaceFolder}",
             "preLaunchTask": "Build CMake Debug",

@@ -12,6 +12,40 @@
 #include "task.h"
 
 #include "arm_math.h"
+#include "core_cm4.h"
+
+/**
+ * @brief  Initialize ITM/SWO for live variable watching via Cortex-Debug
+ * @note   cpuFreq must match SystemCoreClock (180 MHz), swoFreq must match launch.json (2 MHz)
+ */
+void ITM_Init(uint32_t cpuFreq, uint32_t swoFreq)
+{
+    /* Enable Debug Exception and Monitor Control Register (DEMCR) */
+    CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
+
+    /* Enable DWT cycle counter (required for SWO timing) */
+    DWT->CYCCNT = 0;
+    DWT->CTRL   |= DWT_CTRL_CYCCNTENA_Msk;
+
+    /* Configure SWO baud rate: SWO_freq = cpu_freq / (prescaler + 1) */
+    TPIU->ACPR = (cpuFreq / swoFreq) - 1;
+
+    /* Set SWO to use NRZ (UART) mode */
+    TPIU->SPPR = 2;
+
+    /* Disable Formatter (not needed for single-wire SWO) */
+    TPIU->FFCR = 0;
+
+    /* Unlock ITM and enable it */
+    ITM->LAR  = 0xC5ACCE55;
+    ITM->TCR  = ITM_TCR_TRACEBUSID_Msk |
+                ITM_TCR_SYNCENA_Msk    |
+                ITM_TCR_TSENA_Msk      |
+                ITM_TCR_ITMENA_Msk;
+
+    /* Enable ITM stimulus port 0 (used for console output) */
+    ITM->TER = 0x1;
+}
 
 void SystemClock_Config(void)
 {
@@ -91,6 +125,9 @@ int main(void)
 {
 	/* Configure the system clock to 180 MHz */
 	SystemClock_Config();
+
+	/* Initialize ITM/SWO for Cortex-Debug live watch (cpu=180MHz, swo=2MHz) */
+	ITM_Init(180000000, 2000000);
 
 	/* Initialize GPIO */
 	GPIO_Init();
