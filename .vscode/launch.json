@@ -11,7 +11,7 @@
             "name": "STM32Cube: Launch ST-Link GDB Server",
             "origin": "snippet",
             "cwd": "${workspaceFolder}",
-            "preBuild": "${command:st-stm32-ide-debug-launch.build}",
+            "preLaunchTask": "Build CMake Debug",
             "runEntry": "main",
             "imagesAndSymbols": [
                 {
