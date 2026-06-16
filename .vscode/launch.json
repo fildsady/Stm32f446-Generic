@@ -15,6 +15,9 @@
             "runToEntryPoint": "main",
             "stlinkPath": "C:/ST/STM32CubeCLT_1.21.0/STLink-gdb-server/bin/ST-LINK_gdbserver.exe",
             "armToolchainPath": "C:/ST/STM32CubeCLT_1.21.0/GNU-tools-for-STM32/bin",
+            "serverArgs": [
+                "-cp", "C:/ST/STM32CubeCLT_1.21.0/STM32CubeProgrammer/bin"
+            ],
             "swoConfig": {
                 "enabled": true,
                 "cpuFrequency": 180000000,
