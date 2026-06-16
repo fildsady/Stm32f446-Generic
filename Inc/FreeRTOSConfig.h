@@ -69,6 +69,15 @@
 #define INCLUDE_xTaskGetHandle                  0
 #define INCLUDE_xTaskResumeFromISR              1
 
+/* Cortex-M4 interrupt priority configuration for FreeRTOS.
+ * STM32F4 uses 4 priority bits (16 levels). The highest urgency
+ * that FreeRTOS API calls are safe from is priority 5 (0x50 shifted). */
+#define configPRIO_BITS                         4
+#define configLIBRARY_LOWEST_INTERRUPT_PRIORITY         15
+#define configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY    5
+#define configKERNEL_INTERRUPT_PRIORITY         ( configLIBRARY_LOWEST_INTERRUPT_PRIORITY << (8 - configPRIO_BITS) )
+#define configMAX_SYSCALL_INTERRUPT_PRIORITY    ( configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY << (8 - configPRIO_BITS) )
+
 /* Definitions that map the FreeRTOS port interrupt handlers to their CMSIS
 standard names. We use libopencm3 names here. */
 #define vPortSVCHandler sv_call_handler
